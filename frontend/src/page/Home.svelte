@@ -4,6 +4,7 @@
     
     let listmovie = [];
     let movie_title = "";
+    let movie_srclist= [];
     let movie_src = "";
     let myModal = "";
 	const loaded = new Map();
@@ -61,8 +62,26 @@
 	}
     const handleMovie = (src,title,tipe) => {
         movie_title = title
-        movie_src = src
+        movie_srclist= [];
+        let no = 0
         if(tipe == "movie"){
+            if(src != null){
+                if(src.length > 1){
+                    for(let i=0; i<src.length;i++){
+                        no = no + 1
+                        movie_src = src[i]["movie_src"]
+                        movie_srclist = [
+                        ...movie_srclist,
+                            {
+                                movie_no: no,
+                                movie_src: src[i]["movie_src"],
+                            },
+                        ];
+                    }
+                }else{
+                    movie_src = src[0]["movie_src"]
+                }
+            }
             myModal = new bootstrap.Modal(document.getElementById("modalmovie"));
 		    myModal.show();
         }else{
@@ -70,10 +89,15 @@
             myModal = new bootstrap.Modal(document.getElementById("modalseries"));
 		    myModal.show();
         }
+        console.log(movie_srclist)
+	};
+    const handleChangeSource = (e) => {
+        movie_src = e
 	};
     const handleCloseModal = () => {
         movie_title = ""
         movie_src = ""
+        movie_srclist = []
 		myModal.hide();
 	};
     call_movie()
@@ -144,7 +168,14 @@
 			src="{movie_src}" 
 			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
 			title="YouTube video" allowfullscreen></iframe>
-	  </div>
+	</div>
+    {#each movie_srclist as rec}
+    <button
+        on:click={() => {
+            handleChangeSource(rec.movie_src);
+        }} 
+        type="button" class="btn btn-warning btn-sm">SERVER {rec.movie_no}</button>&nbsp;
+    {/each}
   </slot:template>
 </Modal>
 <Modal

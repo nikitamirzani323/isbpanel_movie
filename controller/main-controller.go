@@ -19,6 +19,7 @@ const PATH string = config.PATH_API
 
 func Listmovie(c *fiber.Ctx) error {
 	hostname := c.Hostname()
+	log.Println("Hostname: ", hostname)
 	render_page := time.Now()
 	axios := resty.New()
 	resp, err := axios.R().
