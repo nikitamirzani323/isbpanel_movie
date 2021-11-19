@@ -18,7 +18,6 @@
 </script>
 {#if client_device =="WEBSITE"}
 <Navbar />
-
 <div class="container" style="margin-top: 50px;">
 	<div class="row">
 		<Home />
@@ -26,4 +25,11 @@
 	</div>
 </div>
 <Footer />
+{:else}
+	<center style="margin-top: 50px;">
+		<h1></h1>
+		<a href="https://play.google.com/store/apps/details?id=com.isb.tv">
+			<img width="150" src="https://duniafilm.b-cdn.net/img/download.png" alt="">
+		</a>
+	</center>
 {/if}
