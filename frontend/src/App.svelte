@@ -1,4 +1,6 @@
 <script>
+	import Router from "svelte-spa-router";
+	import { wrap } from "svelte-spa-router/wrap";
 	import Navbar from "./component/Navbar.svelte";
 	import Footer from "./component/Footer.svelte";
 	import Home from "./page/Home.svelte";
@@ -16,6 +18,7 @@
 </script>
 {#if client_device =="WEBSITE"}
 <Navbar />
+
 <div class="container" style="margin-top: 50px;">
 	<div class="row">
 		<Home />

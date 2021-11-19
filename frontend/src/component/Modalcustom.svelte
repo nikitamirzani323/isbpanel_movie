@@ -1,4 +1,6 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+
     export let modal_id = "modal_1" 
     export let modal_size = "modal-dialog-centered"
     export let modal_title = "Title"
@@ -9,13 +11,31 @@
     export let modal_footer_css = ""
     export let modal_footer = false
     export let header_flag = false
+    export let menu = false
+    let dispatch = createEventDispatcher();
+    const handleClickMenu = (e) => {
+        let click = e
+        const movie = {
+            click,
+        };
+        dispatch("handleClickMenu", movie);
+    };
 </script>
 
 <div class="modal fade" id={modal_id} tabindex="-1" data-bs-backdrop="false" >
 	<div class="modal-dialog {modal_size}" style="">
 		<div class="modal-content" style="border-radius: 0px;{modal_modal_css}">
 			<div class="modal-header" style="border:none;{modal_header_css}">
-				<h3 class="modal-title" id="exampleModalLabel" style="{modal_headertitle_css}">{modal_title}</h3>
+				<h3 class="modal-title" id="exampleModalLabel" style="{modal_headertitle_css}">
+                    {#if menu}
+                    <i 
+                        on:click={() => {
+                            handleClickMenu('HIDE')
+                        }}
+                        class="bi bi-list"></i> &nbsp;
+                    {/if}
+                    {modal_title}
+                </h3>
                 <slot name="modal-header" />
 			</div>
 			{#if header_flag}

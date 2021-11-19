@@ -15,6 +15,7 @@
 	<div class="modal-dialog {modal_size}" style="">
 		<div class="modal-content" style="border-radius: 0px;{modal_modal_css}">
 			<div class="modal-header" style="border:none;{modal_header_css}">
+                <i class="bi bi-list"></i>
 				<h3 class="modal-title" id="exampleModalLabel" style="{modal_headertitle_css}">{modal_title}</h3>
 				<button
 					type="button"
