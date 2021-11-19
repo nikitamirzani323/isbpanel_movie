@@ -18,14 +18,14 @@ type response struct {
 const PATH string = config.PATH_API
 
 func Listmovie(c *fiber.Ctx) error {
+	hostname := c.Hostname()
 	render_page := time.Now()
-
 	axios := resty.New()
 	resp, err := axios.R().
 		SetResult(response{}).
 		SetHeader("Content-Type", "application/json").
 		SetBody(map[string]interface{}{
-			"client_company": "",
+			"client_hostname": hostname,
 		}).
 		Post(PATH + "api/movie")
 	if err != nil {
