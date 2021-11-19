@@ -16,11 +16,7 @@
 		<div class="modal-content" style="border-radius: 0px;{modal_modal_css}">
 			<div class="modal-header" style="border:none;{modal_header_css}">
 				<h3 class="modal-title" id="exampleModalLabel" style="{modal_headertitle_css}">{modal_title}</h3>
-				<button
-					type="button"
-					class="btn-close btn-close-white"
-					data-bs-dismiss="modal"
-					aria-label="Close"></button>
+                <slot name="modal-header" />
 			</div>
 			{#if header_flag}
 				<slot name="header" />
