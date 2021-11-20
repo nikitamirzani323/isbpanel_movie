@@ -19,6 +19,7 @@ func Init() *fiber.App {
 		Browse:    true,
 	})
 
+	app.Post("api/initmovie", controller.Init)
 	app.Post("api/listmovie", controller.Listmovie)
 	return app
 }

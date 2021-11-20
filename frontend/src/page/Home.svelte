@@ -1,46 +1,15 @@
 <script>
     import Modal from "../component/Modalcustom.svelte";
     import Placeholder from "../component/Placeholder.svelte";
-    
-    let listmovie = [];
+
+    export let listmovie = [];
     let movie_title = "";
     let movie_srclist= [];
     let movie_src = "";
     let myModal = "";
+   
 	const loaded = new Map();
-    async function call_movie() {
-		const resdata = await fetch("/api/listmovie", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({}),
-            });
-            if (!resdata.ok) {
-            const pasarMessage = `An error has occured: ${resdata.status}`;
-            throw new Error(pasarMessage);
-            } else {
-            const jsondata = await resdata.json();
-            if (jsondata.status == 200) {
-                let record = jsondata.record;
-                if (record != null) {
-                for (var i = 0; i < record.length; i++) {
-                    listmovie = [
-                    ...listmovie,
-                        {
-                            movie_idcategory: record[i]["movie_idcategory"],
-                            movie_type: record[i]["movie_type"],
-                            movie_category: record[i]["movie_category"],
-                            movie_list: record[i]["movie_list"],
-                        },
-                    ];
-                }
-                } else {
-                alert("Error");
-                }
-            } 
-		}
-	}
+    
     function lazy(node, data) {
 		if (loaded.has(data.src)) {
 			node.setAttribute('src', data.src);
@@ -53,7 +22,7 @@
 					loaded.set(data.src, img);
 					node.setAttribute('src', data.src); 
 				};
-			}, 500);
+			}, 100);
 		}
 
 		return {
@@ -100,7 +69,6 @@
         movie_srclist = []
 		myModal.hide();
 	};
-    call_movie()
     const handleClickMenu = (e) => {
         // page = e.detail.page
         console.log(e.detail)
@@ -122,7 +90,7 @@
                                         handleMovie(rec2.movie_video,rec2.movie_title,rec2.movie_type);
                                     }}  
                                     class="card" style="background-color:#2c2c2c;border:none;cursor:pointer;">
-                                    <span style="font-size:11px;color: white;margin-top: 5px;position:absolute;background-color:rgba(237, 36, 122, 0.3);padding:5px;width:90px;border-top-right-radius:5px;border-bottom-right-radius:5px;">
+                                    <span style="font-size:10px;color: white;margin-top: 5px;position:absolute;background-color:rgba(237, 36, 122, 0.3);padding:5px;width:90px;border-top-right-radius:5px;border-bottom-right-radius:5px;">
                                         {rec2.movie_label}
                                     </span>
                                     <img
