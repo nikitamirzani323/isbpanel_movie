@@ -81,13 +81,15 @@
 {#if client_device =="WEBSITE"}
 	{#if client_token !=""}
 	<Navbar />
-	<div class="container" style="margin-top: 50px;">
-		<div class="row">
-			<Home
-				{listmovie}
-				{client_token} />
+	
+		<div class="container" style="margin-top: 50px;">
+			<div class="row">
+				<Home
+					{listmovie}
+					{client_token} />
+			</div>
 		</div>
-	</div>
+	
 	<Footer />
 	{/if}
 {:else}

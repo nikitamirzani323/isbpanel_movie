@@ -77,24 +77,25 @@
 <div class="col-sm-12" style="margin:0px;padding:0px 3px 0px 0px;">
     {#if listmovie != ""}
         {#each listmovie as rec}
-            <div class="card" style="background-color:#2c2c2c;border:none;margin-top:5px;">
-                <div class="card-header" style="padding: 10px 0px 5px 10px;margin:0px;background-color:#2c2c2c;border-bottom:2px solid #ed247a;">
-                <h1 style="font-size: 16px;color:white;font-weight:bold;">{rec.movie_category}</h1>
+            <div class="card" style="background-color:#1e152e;border:none;margin-top:5px;">
+                <div class="card-header" style="padding: 10px 0px 5px 10px;margin:0px;background-color:#1e152e;border-bottom:2px solid #d8278f;">
+                    <h1 style="font-size: 16px;color:white;font-weight:bold;">{rec.movie_category}</h1>
                 </div>
-                <div class="card-body" style="margin: 5px;padding:5px;background-color: #2c2c2c;border-bottom:1px solid #2c2c2c;">
+                <div class="card-body" style="margin: 5px;padding:5px;background-color: #1e152e;border-bottom:1px solid #1e152e;">
                     <div class="row">
                         {#each rec.movie_list as rec2}
-                            <div class="col-sm-1" style="margin:0px;padding:5px;">
+                            <div class="col-sm-3 col-md-1 col-lg-1 col-xl-1" style="margin:0px;padding:3px;">
                                 <div
                                     on:click={() => {
                                         handleMovie(rec2.movie_video,rec2.movie_title,rec2.movie_type);
                                     }}  
-                                    class="card" style="background-color:#2c2c2c;border:none;cursor:pointer;">
+                                    class="card" style="background-color:#1e152e;border:none;cursor:pointer;">
                                     
                                     <img
-                                        width="100"
+                                        style="border: 1px solid #1e152e;background-color: none;"
+                                        class="img-thumbnail"
                                         alt="{rec2.movie_title}"
-                                        src="placeholder.png"
+                                        src="https://imagedelivery.net/W-Usm3AjeE17sxpltvGRNA/fd0287a2-353d-4b47-9a6c-9c8df2ab3f00/public"
                                         use:lazy="{{src: rec2.movie_thumbnail}}">
                                 </div>
                             </div>
@@ -109,6 +110,16 @@
         <Placeholder total_placeholder="6" card_style="background-color:#2c2c2c;border:none;margin-top:5px;" />
     {/if}
 </div>
+<style>
+    .img-thumbnail {
+        padding: 0;
+        background-color: #2c2c2c;
+        border: 1px solid #2c2c2c;
+        border-radius: .2rem;
+        max-width: 100%;
+        height: auto;
+    }
+</style>
 <Modal 
   modal_id="modalmovie"
   modal_size="modal-dialog-centered modal-xl"
