@@ -90,9 +90,7 @@
                                         handleMovie(rec2.movie_video,rec2.movie_title,rec2.movie_type);
                                     }}  
                                     class="card" style="background-color:#2c2c2c;border:none;cursor:pointer;">
-                                    <span style="font-size:10px;color: white;margin-top: 5px;position:absolute;background-color:rgba(237, 36, 122, 0.3);padding:5px;width:90px;border-top-right-radius:5px;border-bottom-right-radius:5px;">
-                                        {rec2.movie_label}
-                                    </span>
+                                    
                                     <img
                                         width="100"
                                         alt="{rec2.movie_title}"
@@ -107,6 +105,7 @@
         {/each}
     {:else}
         <Placeholder total_placeholder="6" card_style="background-color:#2c2c2c;border:none;margin-top:5px;" />
+        <Placeholder total_placeholder="4" card_style="background-color:#2c2c2c;border:none;margin-top:5px;" />
         <Placeholder total_placeholder="6" card_style="background-color:#2c2c2c;border:none;margin-top:5px;" />
     {/if}
 </div>
