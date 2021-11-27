@@ -81,3 +81,99 @@ func Listmovie(c *fiber.Ctx) error {
 		})
 	}
 }
+
+type clientSeason struct {
+	Movie_id int `json:"movie_id"`
+}
+type clientEpisode struct {
+	Season_id int `json:"season_id"`
+}
+
+func Listseason(c *fiber.Ctx) error {
+	client := new(clientSeason)
+	render_page := time.Now()
+	if err := c.BodyParser(client); err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": err.Error(),
+			"record":  nil,
+		})
+	}
+	hostname := c.Hostname()
+	bearToken := c.Get("Authorization")
+	token := strings.Split(bearToken, " ")
+	axios := resty.New()
+	resp, err := axios.R().
+		SetAuthToken(token[1]).
+		SetResult(response{}).
+		SetError(responseerror{}).
+		SetHeader("Content-Type", "application/json").
+		SetBody(map[string]interface{}{
+			"client_hostname": hostname,
+			"movie_id":        client.Movie_id,
+		}).
+		Post(PATH + "api/season")
+	if err != nil {
+		log.Println(err.Error())
+	}
+	result := resp.Result().(*response)
+	if result.Status == 200 {
+		return c.JSON(fiber.Map{
+			"status": result.Status,
+			"record": result.Record,
+			"time":   time.Since(render_page).String(),
+		})
+	} else {
+		result_error := resp.Error().(*responseerror)
+		return c.JSON(fiber.Map{
+			"status":  result_error.Status,
+			"message": result_error.Message,
+			"time":    time.Since(render_page).String(),
+		})
+	}
+}
+func Listepisode(c *fiber.Ctx) error {
+	client := new(clientEpisode)
+	render_page := time.Now()
+	if err := c.BodyParser(client); err != nil {
+		c.Status(fiber.StatusBadRequest)
+		return c.JSON(fiber.Map{
+			"status":  fiber.StatusBadRequest,
+			"message": err.Error(),
+			"record":  nil,
+		})
+	}
+	hostname := c.Hostname()
+	bearToken := c.Get("Authorization")
+	token := strings.Split(bearToken, " ")
+	axios := resty.New()
+	resp, err := axios.R().
+		SetAuthToken(token[1]).
+		SetResult(response{}).
+		SetError(responseerror{}).
+		SetHeader("Content-Type", "application/json").
+		SetBody(map[string]interface{}{
+			"client_hostname": hostname,
+			"season_id":       client.Season_id,
+		}).
+		Post(PATH + "api/episode")
+	if err != nil {
+		log.Println(err.Error())
+	}
+	result := resp.Result().(*response)
+	if result.Status == 200 {
+		return c.JSON(fiber.Map{
+			"status": result.Status,
+			"record": result.Record,
+			"time":   time.Since(render_page).String(),
+		})
+	} else {
+		result_error := resp.Error().(*responseerror)
+		return c.JSON(fiber.Map{
+			"status":  result_error.Status,
+			"message": result_error.Message,
+			"time":    time.Since(render_page).String(),
+		})
+	}
+}

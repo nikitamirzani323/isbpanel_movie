@@ -2,12 +2,15 @@
     import Modal from "../component/Modalcustom.svelte";
     import Placeholder from "../component/Placeholder.svelte";
 
+    export let client_token = "";
     export let listmovie = [];
     let movie_title = "";
     let movie_srclist= [];
     let movie_src = "";
     let myModal = "";
-   
+    let listseason = [];
+    let listepisode = [];
+    let season_select = "";
 	const loaded = new Map();
     
     function lazy(node, data) {
@@ -29,7 +32,7 @@
 			destroy(){} // noop
 		};
 	}
-    const handleMovie = (src,title,tipe) => {
+    const handleMovie = (idmovie,src,title,tipe) => {
         movie_title = title
         movie_srclist= [];
         let no = 0
@@ -54,7 +57,8 @@
             myModal = new bootstrap.Modal(document.getElementById("modalmovie"));
 		    myModal.show();
         }else{
-            movie_src = "https://www.youtube.com/embed/f4sTRkuhUSo"
+            call_season(idmovie)
+           
             myModal = new bootstrap.Modal(document.getElementById("modalseries"));
 		    myModal.show();
         }
@@ -67,12 +71,94 @@
         movie_title = ""
         movie_src = ""
         movie_srclist = []
+        listseason = []
+        listepisode = []
 		myModal.hide();
 	};
     const handleClickMenu = (e) => {
         // page = e.detail.page
         console.log(e.detail)
     };
+    const handleSelectSeason = (event) => {
+        call_episode(event.target.value);
+    };
+    const handleSelectEpisode = (event) => {
+        movie_src = event.target.value
+    };
+    async function call_season(e) {
+		listseason = [];
+		const resdata = await fetch("/api/listseason", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + client_token,
+            },
+            body: JSON.stringify({
+                movie_id: parseInt(e)
+            }),
+        });
+        if (!resdata.ok) {
+            const pasarMessage = `An error has occured: ${resdata.status}`;
+            throw new Error(pasarMessage);
+        }else{
+            const jsondata = await resdata.json();
+            if (jsondata.status == 200) {
+                let record = jsondata.record;
+                if (record != null) {
+                    for (var i = 0; i < record.length; i++) {
+                        listseason = [
+                        ...listseason,
+                            {
+                                season_id: record[i]["season_id"],
+                                season_title: record[i]["season_title"],
+                            },
+                        ];
+                    }
+                } else {
+                    alert("Error");
+                }
+            }
+		}
+	}
+    async function call_episode(e) {
+		listepisode = [];
+		const resdata = await fetch("/api/listepisode", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + client_token,
+            },
+            body: JSON.stringify({
+                season_id: parseInt(e)
+            }),
+        });
+        if (!resdata.ok) {
+            const pasarMessage = `An error has occured: ${resdata.status}`;
+            throw new Error(pasarMessage);
+        }else{
+            const jsondata = await resdata.json();
+            if (jsondata.status == 200) {
+                let record = jsondata.record;
+                if (record != null) {
+                    for (var i = 0; i < record.length; i++) {
+                        if(parseInt(i) == 0){
+                            movie_src = record[i]["episode_src"]
+                        }
+                        listepisode = [
+                        ...listepisode,
+                            {
+                                episode_id: record[i]["episode_id"],
+                                episode_title: record[i]["episode_title"],
+                                episode_src: record[i]["episode_src"],
+                            },
+                        ];
+                    }
+                } else {
+                    alert("Error");
+                }
+            }
+		}
+	}
 </script>
 <div class="col-sm-12" style="margin:0px;padding:0px 3px 0px 0px;">
     {#if listmovie != ""}
@@ -87,7 +173,7 @@
                             <div class="col-sm-3 col-md-1 col-lg-1 col-xl-1" style="margin:0px;padding:3px;">
                                 <div
                                     on:click={() => {
-                                        handleMovie(rec2.movie_video,rec2.movie_title,rec2.movie_type);
+                                        handleMovie(rec2.movie_id,rec2.movie_video,rec2.movie_title,rec2.movie_type);
                                     }}  
                                     class="card" style="background-color:#1e152e;border:none;cursor:pointer;">
                                     
@@ -184,19 +270,25 @@
                 <div class="mb-3">
                     <label for="exampleForm" class="form-label">Season</label>
                     <select
+                        on:change={handleSelectSeason}
+                        bind:value="{season_select}"
                         style="background-color: #222222;color:white;border:none;"
-                        class="form-control" 
-                        name="" id="">
-                        <option value="">Season1</option>
+                        class="form-control">
+                        {#each listseason as rec }
+                        <option value="{rec.season_id}">{rec.season_title}</option>
+                        {/each}
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="exampleForm" class="form-label">Episode</label>
                     <select
+                        on:change={handleSelectEpisode}
                         style="background-color: #222222;color:white;border:none;"
                         class="form-control" 
                         name="" id="">
-                        <option value="">Season1</option>
+                        {#each listepisode as rec }
+                        <option value="{rec.episode_src}">{rec.episode_title}</option>
+                        {/each}
                     </select>
                 </div>
             </div>

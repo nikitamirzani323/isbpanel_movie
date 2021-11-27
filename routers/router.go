@@ -21,5 +21,7 @@ func Init() *fiber.App {
 
 	app.Post("api/initmovie", controller.Init)
 	app.Post("api/listmovie", controller.Listmovie)
+	app.Post("api/listseason", controller.Listseason)
+	app.Post("api/listepisode", controller.Listepisode)
 	return app
 }
