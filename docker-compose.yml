@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   frontendmovie:
-    image: isbmovie:0.0.2
+    image: isbmovie:0.0.5
     build: "."
     ports:
       - "7075"
@@ -24,7 +24,7 @@ services:
     depends_on:
       - frontendmovie
     ports:
-      - "7074:7074"
+      - "80:80"
     networks:
       - "isbmovie.network"
 networks:
